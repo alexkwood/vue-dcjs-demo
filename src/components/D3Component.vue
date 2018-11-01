@@ -1,0 +1,60 @@
+<template>
+  <div>
+    <svg width="500" height="270">
+      <g style="transform: translate(0, 10px)">
+        <path :d="line" />
+      </g>
+    </svg>
+    <button v-on:click="addNumber()">Add number</button>
+  </div>
+</template>
+
+<script>
+import * as d3 from 'd3'
+
+export default {
+  name: 'vue-line-chart',
+  data () {
+    return {
+      data: [Math.floor(Math.random() * 20), Math.floor(Math.random() * 20)],
+      line: ''
+    }
+  },
+  methods: {
+    addNumber () {
+      this.data.push(this.data.slice(-1)[0] + Math.floor(Math.random() * 21) - 10)
+      // this.data.push(Math.floor(Math.random() * 20))
+      this.calculatePath()
+    },
+    getScales () {
+      const x = d3.scaleTime().range([0, 430])
+      const y = d3.scaleLinear().range([210, 0])
+      d3.axisLeft().scale(x)
+      d3.axisBottom().scale(y)
+      x.domain(d3.extent(this.data, (d, i) => i))
+      y.domain([d3.min(this.data, d => d), d3.max(this.data, d => d)])
+      return { x, y }
+    },
+    calculatePath () {
+      const scale = this.getScales()
+      const path = d3.line()
+        .x((d, i) => scale.x(i))
+        .y(d => scale.y(d))
+      this.line = path(this.data)
+    }
+  },
+  mounted () {
+    this.calculatePath()
+  }
+}
+</script>
+
+<style lang="sass" scoped>
+
+svg
+  margin: 25px;
+path
+  fill: none
+  stroke: #76BF8A
+  stroke-width: 3px
+</style>
