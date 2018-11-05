@@ -1,6 +1,8 @@
 # vue-dcjs-demo
 
-> Demonstration of dc.js in Vue
+> Demonstration of crossfilter charting with dc.js in Vue
+
+https://dc-js.github.io/dc.js/
 
 ## Build Setup
 

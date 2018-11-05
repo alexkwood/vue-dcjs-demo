@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
+import D3Component from '@/components/D3Component'
 
 Vue.use(Router)
 
@@ -8,8 +8,13 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
+      name: 'D3Component',
+      component: D3Component
+    },
+    {
+      path: '/d3',
+      name: 'D3Component',
+      component: D3Component
     }
   ]
 })
