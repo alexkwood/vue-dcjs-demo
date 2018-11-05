@@ -1,11 +1,12 @@
 <template>
   <div>
+    <h1>a random walk</h1>
+    <h2>{{this.data.slice(-1)[0]}}</h2>
     <svg width="500" height="270">
       <g style="transform: translate(0, 10px)">
         <path :d="line" />
       </g>
     </svg>
-    <button v-on:click="addNumber()">Add number</button>
   </div>
 </template>
 
@@ -16,14 +17,13 @@ export default {
   name: 'vue-line-chart',
   data () {
     return {
-      data: [Math.floor(Math.random() * 20), Math.floor(Math.random() * 20)],
+      data: [0],
       line: ''
     }
   },
   methods: {
     addNumber () {
-      this.data.push(this.data.slice(-1)[0] + Math.floor(Math.random() * 21) - 10)
-      // this.data.push(Math.floor(Math.random() * 20))
+      this.data.push(this.data.slice(-1)[0] + Math.floor(Math.random() * 201) - 100)
       this.calculatePath()
     },
     getScales () {
@@ -43,8 +43,8 @@ export default {
       this.line = path(this.data)
     }
   },
-  mounted () {
-    this.calculatePath()
+  created: function () {
+    this.timer = setInterval(this.addNumber, 100)
   }
 }
 </script>

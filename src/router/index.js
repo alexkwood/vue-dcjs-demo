@@ -10,6 +10,11 @@ export default new Router({
       path: '/',
       name: 'D3Component',
       component: D3Component
+    },
+    {
+      path: '/d3',
+      name: 'D3Component',
+      component: D3Component
     }
   ]
 })
