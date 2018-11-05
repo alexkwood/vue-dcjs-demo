@@ -50,11 +50,12 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-
+h1, h2
+  color: #2c3e50
 svg
   margin: 25px;
 path
   fill: none
-  stroke: #76BF8A
+  stroke: #2c3e50
   stroke-width: 3px
 </style>
