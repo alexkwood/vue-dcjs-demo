@@ -1,7 +1,9 @@
 <template>
   <div>
     <h1>DC</h1>
-    <div id="test"></div>
+    <div id="pie1" />
+    <div id="pie2" />
+    <div id="barchart1" />
   </div>
 </template>
 
@@ -10,43 +12,81 @@ import * as dc from 'dc'
 import * as d3 from 'd3'
 import crossfilter from 'crossfilter'
 
-var data = crossfilter([
-  { expt: 1, run: 1, speed: 850 },
-  { expt: 1, run: 2, speed: 740 },
-  { expt: 1, run: 3, speed: 900 },
-  { expt: 1, run: 4, speed: 1070 },
-  { expt: 2, run: 1, speed: 930 },
-  { expt: 2, run: 2, speed: 850 },
-  { expt: 2, run: 3, speed: 950 },
-  { expt: 2, run: 4, speed: 980 },
-  { expt: 2, run: 5, speed: 880 },
-  { expt: 3, run: 1, speed: 2000 },
-  { expt: 3, run: 2, speed: 980 },
-  { expt: 3, run: 3, speed: 880 },
-  { expt: 3, run: 4, speed: 1000 }
-])
-
-var runDimension = data.dimension(function (d) { return +d.run })
-var speedSumGroup = runDimension.group().reduceSum(function (d) { return d.speed * d.run / 1000 })
-
 export default {
   name: 'vue-crossfilter-chart',
-  mounted () {
-    var chart = dc.barChart('#test')
-    chart
-      .width(768)
-      .height(480)
-      .x(d3.scaleLinear().domain([0, 6]))
-      .brushOn(false)
-      .yAxisLabel('This is the Y Axis!')
-      .dimension(runDimension)
-      .group(speedSumGroup)
-      .on('renderlet', function (chart) {
-        chart.selectAll('rect').on('click', function (d) {
-          console.log('click!', d)
+  data () {
+    return {
+      data: crossfilter([
+        { name: 'banana', category: 'fruit', country: 'Martinique', outOfDateQuantity: 3, quantity: 12 },
+        { name: 'apple', category: 'fruit', country: 'Spain', outOfDateQuantity: 7, quantity: 9 },
+        { name: 'tomato', category: 'vegetable', country: 'Spain', outOfDateQuantity: 2, quantity: 25 },
+        { name: 'peach', category: 'fruit', country: 'Netherlands', outOfDateQuantity: 1, quantity: 5 }
+      ]),
+      chart: '',
+      dimensionCategory: null,
+      quantityByCategory: null,
+      dimensionCountryAndCategory: null,
+      quantityByCountryAndCategory: null,
+      countryCategory: null,
+      outOfDateByCountry: null
+    }
+  },
+  methods: {
+    calculatePie1 () {
+      var pie1 = dc.pieChart('#pie1')
+      pie1
+        .width(200)
+        .height(200)
+        .innerRadius(25)
+        .label(function (d) {
+          return d.key + ': ' + d.value
         })
-      })
-    chart.render()
+        .dimension(this.dimensionCategory)
+        .group(this.quantityByCategory)
+      pie1.render()
+    },
+    calculatePie2 () {
+      var pie2 = dc.pieChart('#pie2')
+      pie2
+        .width(200)
+        .height(200)
+        .innerRadius(25)
+        .dimension(this.dimensionCountryAndCategory)
+        .group(this.quantityByCountryAndCategory)
+      pie2.render()
+    },
+    calculateBarchart1 () {
+      var chart = dc.barChart('#barchart1')
+      chart
+        .width(200)
+        .height(200)
+        .x(d3.scaleOrdinal())
+        .xUnits(dc.units.ordinal)
+        .xAxisLabel('Country')
+        .yAxisLabel('Out of date quantity')
+        .elasticY(true)
+        .dimension(this.countryCategory)
+        .group(this.outOfDateByCountry)
+      chart.render()
+    },
+    calculateCharts () {
+      // dimensions
+      this.dimensionCategory = this.data.dimension(item => item.category)
+      this.quantityByCategory = this.dimensionCategory.group().reduceSum(item => item.quantity)
+
+      this.dimensionCountryAndCategory = this.data.dimension(item => item.country + '_' + item.category)
+      this.quantityByCountryAndCategory = this.dimensionCountryAndCategory.group().reduceSum(item => item.quantity)
+
+      this.countryCategory = this.data.dimension(item => item.country)
+      this.outOfDateByCountry = this.countryCategory.group().reduceSum(item => item.outOfDateQuantity)
+
+      this.calculatePie1()
+      this.calculatePie2()
+      this.calculateBarchart1()
+    }
+  },
+  mounted () {
+    this.calculateCharts()
   }
 }
 </script>
@@ -54,10 +94,4 @@ export default {
 <style lang="sass">
 h1, h2
   color: #2c3e50
-svg
-  margin: 25px;
-path
-  fill: none
-  stroke: #2c3e50
-  stroke-width: 3px
 </style>

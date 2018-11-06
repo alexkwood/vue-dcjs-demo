@@ -1,8 +1,13 @@
 # vue-dcjs-demo
 
-> Demonstration of crossfilter charting with dc.js in Vue
+> Demonstration of interactive dashboarding with crossfilter and dc.js in Vue
 
+https://dc-js.github.io/dc.js/examples/
 https://dc-js.github.io/dc.js/
+
+If you understand well Excel you can create a dynamic dashboard with pivot tables, but you might get to a point where you want to move to the web. Solutions are Tableau, Qlik Sense or MS Power BI to build beautiful and interactive dashboards, but they are not free to develop or to embed and they all have limitations.
+
+DC.js is one of the best data visualization frameworks for the web for the creation of highly interactive dashboards. The main advantages are the extreme flexibility, fast rendering of charts, support of large multi-dimensional datasets, and... it is open source!
 
 ## Build Setup
 
