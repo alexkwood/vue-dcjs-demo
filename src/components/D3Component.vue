@@ -3,7 +3,7 @@
     <h1>a random walk</h1>
     <h2>{{this.data.slice(-1)[0]}}</h2>
     <svg width="500" height="270">
-      <g style="transform: translate(0, 10px)">
+      <g>
         <path :d="line" />
       </g>
     </svg>
@@ -44,7 +44,7 @@ export default {
     }
   },
   created: function () {
-    this.timer = setInterval(this.addNumber, 100)
+    this.timer = setInterval(this.addNumber, 5)
   }
 }
 </script>
