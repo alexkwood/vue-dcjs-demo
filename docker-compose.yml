@@ -1,0 +1,12 @@
+# for local development
+version: '3.7'
+services:
+  vue:
+    build:
+      context: .
+      target: 'build-stage'
+    command: /bin/sh -c "yarn run dev"
+    ports:
+     - '8080:8080'
+    volumes:
+    - '.:/app'
